@@ -1,6 +1,7 @@
 /** @type {import('@typescript-eslint/experimental-utils').TSESLint.Linter.Config} */
 const config = {
   root: true,
+  ignorePatterns: '!.*',
   parser: '@typescript-eslint/parser',
   plugins: [
     '@typescript-eslint',
