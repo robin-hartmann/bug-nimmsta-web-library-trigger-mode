@@ -1,7 +1,7 @@
 {
   "name": "bug-nimmsta-web-library-trigger-mode",
   "version": "1.0.0",
-  "description": "Minimal working example for reproducing a bug when quickly switching the trigger mode of a NIMMSTA HS50 scanner using nimmsta-web-library",
+  "description": "Minimal working example for reproducing a bug when quickly switching the trigger mode of a NIMMSTA HS 50 scanner using nimmsta-web-library",
   "author": "contact.robin.hartmann@gmail.com",
   "license": "MIT",
   "private": true,

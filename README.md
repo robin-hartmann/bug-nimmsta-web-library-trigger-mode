@@ -1,6 +1,6 @@
 # 🐞 bug-nimmsta-web-library-trigger-mode
 
-Minimal working example for reproducing a bug when quickly switching the trigger mode of a NIMMSTA HS50 scanner using nimmsta-web-library
+Minimal working example for reproducing a bug when quickly switching the trigger mode of a NIMMSTA HS 50 scanner using nimmsta-web-library
 
 ## 🛠️ Development
 
