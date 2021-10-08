@@ -31,7 +31,8 @@ Follow these steps to reproduce the bug:
 
 Each time you scan something the scanned data should appear in the currently focused input field and then the focus should move to the next input field (or the first, if you reached the end) and that input field should get cleared.
 Below the input fields and the buttons you should see a label with the state in which the scanner should be - it should say `scanner should be enabled`.
-You should be able to continue doing this indefinitely, but the scanner will randomly stop and then stay disabled, even though the label says `scanner should be enabled`.
+
+You should be able to keep scanning indefinitely, but the scanner will randomly stop and then stay disabled, even though the label says `scanner should be enabled`.
 In order to continue you have to tap `Enable Scanner`.
 Also, sometimes the scanner stops temporarily, beeps three times with red flashing LEDs and a toast is shown with the message `Scan not valid 0013 Đ. Wrong length 19 vs. Barcode Length 2 of Đ` (the values change, but the message largely stays the same).
 
