@@ -40,7 +40,7 @@ To stop the server hit CTRL+C in the terminal.
 
 ### 🌐 About the web page
 
-Each time an input field gets focus the scanner gets enabled using `device.preferredTriggerMode = TriggerMode.ButtonAndTouch`.
+Each time an input field receives focus the scanner gets enabled using `device.preferredTriggerMode = TriggerMode.ButtonAndTouch`.
 
 Each time an input field loses focus the scanner gets disabled using `device.preferredTriggerMode = TriggerMode.Disabled`.
 
