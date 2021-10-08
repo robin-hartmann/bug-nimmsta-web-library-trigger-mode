@@ -16,7 +16,7 @@ export class NimmstaScanner {
 
   public init(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      NIMMSTA.onError((error: any) => {
+      NIMMSTA.onError((error: unknown) => {
         reject(
           new Error(
             `error while trying to connect to NIMMSTA app: ${String(error)}`,

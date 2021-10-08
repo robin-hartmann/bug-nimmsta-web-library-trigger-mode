@@ -42,6 +42,7 @@ const config = {
       'error',
       { allowExpressions: true, allowTypedFunctionExpressions: true },
     ],
+    '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-use-before-define': [
       'error',
       { functions: false, classes: true, variables: true, typedefs: true },
