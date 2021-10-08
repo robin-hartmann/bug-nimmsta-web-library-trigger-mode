@@ -30,7 +30,7 @@ export class Controller {
     this.elementCreator
       .createAndAppend('button', 'Enable Scanner')
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      .addEventListener('click', this.enableScanner)
+      .addEventListener('click', () => this.inputs[0]!.focus())
 
     this.elementCreator
       .createAndAppend('button', 'Disable Scanner')
@@ -46,7 +46,7 @@ export class Controller {
   public async run(): Promise<void> {
     await this.scanner.init()
     await this.scanner.connect()
-    this.inputs[0]?.focus()
+    this.inputs[0]!.focus()
   }
 
   @bind
@@ -71,23 +71,33 @@ export class Controller {
 
   @bind
   private enableScanner(): void {
-    if (this.scanner.isConnected()) {
+    if (this.updateScannerState(true)) {
       this.scanner.setEnabled(true)
-      this.updateScannerState(true)
+    } else {
+      alert('scanner is not connected')
     }
   }
 
   @bind
   private disableScanner(): void {
-    if (this.scanner.isConnected()) {
+    if (this.updateScannerState(false)) {
       this.scanner.setEnabled(false)
-      this.updateScannerState(false)
+    } else {
+      alert('scanner is not connected')
     }
   }
 
-  private updateScannerState(isEnabled: boolean): void {
+  private updateScannerState(isEnabled: boolean): boolean {
+    if (!this.scanner.isConnected()) {
+      this.scannerStateLabel.textContent = `scanner is not connected`
+
+      return false
+    }
+
     this.scannerStateLabel.textContent = `scanner should be ${
       isEnabled ? 'enabled' : 'disabled'
     }`
+
+    return true
   }
 }
