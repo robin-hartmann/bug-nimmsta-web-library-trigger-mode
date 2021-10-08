@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import('@typescript-eslint/experimental-utils').TSESLint.Linter.Config} */
+const config = {
   root: true,
   parser: '@typescript-eslint/parser',
   plugins: [
@@ -21,9 +22,7 @@ module.exports = {
     'plugin:node/recommended',
     'plugin:promise/recommended',
     'plugin:unicorn/recommended',
-    'prettier',
-    'prettier/@typescript-eslint',
-    'prettier/unicorn',
+    'plugin:prettier/recommended',
   ],
   env: {
     es6: true,
@@ -31,7 +30,7 @@ module.exports = {
   },
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: './tsconfig.json',
+    project: './tsconfig.lint.json',
   },
   rules: {
     curly: ['error', 'all'],
@@ -47,6 +46,7 @@ module.exports = {
       'error',
       { functions: false, classes: true, variables: true, typedefs: true },
     ],
+    'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
     // https://github.com/basarat/typescript-book/blob/master/docs/tips/defaultIsBad.md
     'import/prefer-default-export': 'off',
     'import/no-default-export': 'error',
@@ -63,7 +63,18 @@ module.exports = {
         ignores: ['modules'],
       },
     ],
+    'unicorn/prefer-module': 'off',
     // Common abbreviations are known and readable
     'unicorn/prevent-abbreviations': 'off',
   },
+  overrides: [
+    {
+      files: ['rollup.config.js'],
+      rules: {
+        'import/no-default-export': 'off',
+      },
+    },
+  ],
 }
+
+module.exports = config
