@@ -1,0 +1,66 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Transpile TypeScript",
+      "type": "shell",
+      "command": "npm run build --silent",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "panel": "shared",
+        "reveal": "silent"
+      },
+      "problemMatcher": ["$eslint-stylish", "$tsc"]
+    },
+    {
+      "label": "Transpile TypeScript without linting",
+      "type": "shell",
+      "command": "npm run build-only --silent",
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "silent"
+      },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "Lint project",
+      "type": "shell",
+      "command": "npm run lint --silent",
+      "group": "none",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "silent"
+      },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "Run TypeScript code using ts-node",
+      "type": "shell",
+      "command": "npm run start:ts --silent",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run generated JavaScript code using node",
+      "type": "shell",
+      "command": "npm run start:js --silent",
+      "group": "none",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
