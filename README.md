@@ -45,6 +45,7 @@ Each time an input field receives focus the scanner gets enabled using `device.p
 Each time an input field loses focus the scanner gets disabled using `device.preferredTriggerMode = TriggerMode.Disabled`.
 
 The purpose of this setup is that the scanner should only be able to scan when an input field is focused.
+This should work reliably no matter how fast the user is scanning, even though a small delay would be acceptable.
 
 ### 📋 Tested with
 
