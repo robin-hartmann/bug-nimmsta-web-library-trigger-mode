@@ -34,7 +34,7 @@ Below the input fields and the buttons you should see a label with the state in 
 
 You should be able to keep scanning indefinitely, but the scanner will randomly stop and then stay disabled, even though the label says `scanner should be enabled`.
 In order to continue you have to tap `Enable Scanner`.
-Also, sometimes the scanner stops temporarily, beeps three times with red flashing LEDs and a toast is shown with the message `Scan not valid 0013 Đ. Wrong length 19 vs. Barcode Length 2 of Đ` (the values change between incidents, but the message largely stays the same).
+Also, sometimes the scanner stops temporarily, beeps three times with red flashing LEDs and a toast is shown with the message `Scan not valid 0013 Ð. Wrong length 19 vs. Barcode Length 2 of Ð` (the values change between incidents, but the message largely stays the same).
 
 To stop the server hit CTRL+C in the terminal.
 
