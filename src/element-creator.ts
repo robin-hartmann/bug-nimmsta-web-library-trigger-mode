@@ -1,5 +1,5 @@
 export class ElementCreator {
-  private nextElementPosX = 0
+  private nextElementTop = 0
 
   public createAndAppend<TTagName extends keyof HTMLElementTagNameMap>(
     tagName: TTagName,
@@ -11,11 +11,11 @@ export class ElementCreator {
       element.textContent = textContent
     }
 
-    element.style.top = `${this.nextElementPosX}px`
+    element.style.top = `${this.nextElementTop}px`
     element.style.position = 'absolute'
 
     document.body.append(element)
-    this.nextElementPosX += element.offsetHeight
+    this.nextElementTop += element.offsetHeight
 
     return element
   }
