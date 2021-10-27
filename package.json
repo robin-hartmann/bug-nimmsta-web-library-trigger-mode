@@ -9,7 +9,7 @@
   "files": [],
   "dependencies": {
     "bind-decorator": "1.0.11",
-    "nimmsta-web-library": "5.0.514"
+    "nimmsta-web-library": "5.0.517"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "21.0.0",

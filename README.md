@@ -1,6 +1,6 @@
 # 🐞 bug-nimmsta-web-library-trigger-mode
 
-Minimal working example for reproducing a bug when quickly switching the trigger mode of a NIMMSTA HS 50 scanner using nimmsta-web-library
+Minimal working example for reproducing bugs when quickly switching the trigger mode of a NIMMSTA HS 50 scanner using nimmsta-web-library
 
 ## 🛠️ Development
 
@@ -14,7 +14,7 @@ These instructions will get you a copy of this project up and running on your lo
 
 ### 🚀 Getting Started
 
-Follow these steps to reproduce the bug:
+Follow these steps to reproduce the bugs:
 
 1. With your computer
    1. Clone this project
@@ -25,41 +25,49 @@ Follow these steps to reproduce the bug:
 1. With your Android device with NIMMSTA APP installed and fully set up
    1. Connect to the web server using the browser
    1. Connect your HS 50, if it isn't connected already
+   1. Make sure `use setLayout:` is checked
    1. Make sure the first input field is focused
 1. With your NIMMSTA HS 50 BT
    1. Start scanning as quickly as possible and keep going
 
 Each time you scan something the scanned data should appear in the currently focused input field and then the focus should move to the next input field (or the first, if you reached the end) and that input field should get cleared.
-Below the input fields and the buttons you should see a label with the state in which the scanner should be - it should say `scanner should be enabled`.
+Also, the screen on the HS 50 should only display the status bar and the last scanned data (or no data).
+Below the input fields and the buttons you should see a label and a checked checkbox `use setLayout:` and a label with the state in which the scanner should be - it should say `scanner state: enabled`.
+At the bottom you should see another label reading `no scan events yet`.
+This last label will show a counter of how many scan events were received.
 
-You should be able to keep scanning indefinitely, but the scanner will randomly stop and then stay disabled, even though the label says `scanner should be enabled`.
-In order to continue you have to tap `Enable Scanner`.
-Also, sometimes the scanner stops temporarily, beeps three times with red flashing LEDs and a toast is shown with the message `Scan not valid 0013 Ð. Wrong length 19 vs. Barcode Length 2 of Ð` (the values change between incidents, but the message largely stays the same).
+You should be able to keep scanning indefinitely, but very rarely the scanner stops temporarily and the LEDs flash red three times (no message is displayed) or it stops temporarily and displays the message `Error: Device is locked` on the screen of the HS 50 for a few seconds.
+Also, the scan events received by the web page do not match the actual scans - some scans are concatenated into a single scan event and some scans don't trigger an event at all, even though the scanner sounded a beep - there should be one scan event per beep (you can use the scan events counter to check this).
+Additionally, the screen of the HS 50 will randomly display GUI elements from a different layout (one or two buttons at the bottom and/or a number in the center) mixed in with the GUI elements it should actually be displaying (status bar and last scanned data).
 
 To stop the server hit CTRL+C in the terminal.
 
 ### 🌐 About the web page
 
-Each time an input field receives focus the scanner gets enabled using `device.preferredTriggerMode = TriggerMode.ButtonAndTouch`.
+Each time an input field receives focus the scanner gets enabled using `device.preferredTriggerMode = TriggerMode.ButtonAndTouch` and the layout is set using `device.setLayout(new SimpleScanLayout())`.
 
-Each time an input field loses focus the scanner gets disabled using `device.preferredTriggerMode = TriggerMode.Disabled`.
+Each time an input field loses focus the scanner gets disabled using `device.preferredTriggerMode = TriggerMode.Disabled` and the layout is set using `device.setLayout(new InteractableLayout(this.counter.toString()))`.
+And each time the `+` or `-` button is pressed on the screen of the HS 50 the counter is incremented or decremented and the layout is updated using `device.updateLayout({ counter: this.counter.toString() })`.
 
 The purpose of this setup is that the scanner should only be able to scan when an input field is focused.
 This should work reliably no matter how fast the user is scanning, even though a small delay would be acceptable.
 
 ### 📋 Tested with
 
+The web page was opened on a Zebra MC330K and the following versions were used:
+
 | Component                    | Version          |
 | ---------------------------- | ---------------- |
-| NIMMSTA Web Library          | `5.0.514`        |
-| NIMMSTA Core Library Shared  | `5.0-3666`       |
-| NIMMSTA Core Library Android | `5.0-2445`       |
-| NIMMSTA App                  | `5.3.1-3704`     |
+| Android                      | `8.1.0`          |
+| NIMMSTA Web Library          | `5.0.517`        |
+| NIMMSTA Core Library Shared  | `5.0-3711`       |
+| NIMMSTA Core Library Android | `5.0-2464`       |
+| NIMMSTA App                  | `5.3.1-3714`     |
 | HS 50 Hardware               | `03.00-0`        |
-| HS 50 Firmware               | `01.14-703`      |
+| HS 50 Firmware               | `01.14-717`      |
 | HS 50 Loader                 | `01.13-703`      |
 | HS 50 Protocol               | `01.03-0`        |
-| HS 50 Imager                 | `AEOS00002R00FX` |
+| HS 50 Imager                 | `AEOS00002R00F0` |
 | HS 50 BLE                    | `05.00-352`      |
 | HS 50 BLE FW                 | `30.1.1.0`       |
 | HS 50 Touch Controller       | `10`             |

@@ -1,6 +1,6 @@
 import bind from 'bind-decorator'
 import { ElementCreator } from './element-creator'
-import { NimmstaScanner } from './nimmsta-scanner'
+import { NimmstaScanner, ScannerScreen } from './nimmsta-scanner'
 
 export class Controller {
   // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -10,7 +10,13 @@ export class Controller {
 
   private readonly inputs: HTMLInputElement[] = []
 
-  private scannerStateLabel: HTMLLabelElement
+  private readonly scannerStateLabel: HTMLLabelElement
+
+  private readonly scanEventsCountLabel: HTMLLabelElement
+
+  private useSetLayout = true
+
+  private scanEventsCount = 0
 
   constructor() {
     for (let i = 0; i < 6; i++) {
@@ -37,9 +43,25 @@ export class Controller {
       // eslint-disable-next-line @typescript-eslint/unbound-method
       .addEventListener('click', this.disableScanner)
 
+    this.elementCreator.createAndAppend('label', 'use setLayout:')
+
+    const useSetLayoutCheckbox = this.elementCreator.createAndAppend('input')
+
+    useSetLayoutCheckbox.type = 'checkbox'
+    useSetLayoutCheckbox.checked = this.useSetLayout
+    useSetLayoutCheckbox.addEventListener('click', () => {
+      this.useSetLayout = useSetLayoutCheckbox.checked
+      this.inputs[0]!.focus()
+    })
+
     this.scannerStateLabel = this.elementCreator.createAndAppend(
       'label',
       'unknown scanner state',
+    )
+
+    this.scanEventsCountLabel = this.elementCreator.createAndAppend(
+      'label',
+      'no scan events yet',
     )
   }
 
@@ -51,6 +73,11 @@ export class Controller {
 
   @bind
   private onScan(data: string): void {
+    console.log(`data scanned: "${data}"`)
+
+    this.scanEventsCountLabel.textContent = `scan event count: ${++this
+      .scanEventsCount}`
+
     const activeEl = document.activeElement
 
     if (!(activeEl instanceof HTMLInputElement)) {
@@ -73,6 +100,11 @@ export class Controller {
   private enableScanner(): void {
     if (this.updateScannerState(true)) {
       this.scanner.setEnabled(true)
+
+      if (this.useSetLayout) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        this.scanner.setScreen(ScannerScreen.SimpleScan)
+      }
     } else {
       alert('scanner is not connected')
     }
@@ -82,6 +114,11 @@ export class Controller {
   private disableScanner(): void {
     if (this.updateScannerState(false)) {
       this.scanner.setEnabled(false)
+
+      if (this.useSetLayout) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        this.scanner.setScreen(ScannerScreen.Interactable)
+      }
     } else {
       alert('scanner is not connected')
     }
@@ -94,7 +131,7 @@ export class Controller {
       return false
     }
 
-    this.scannerStateLabel.textContent = `scanner should be ${
+    this.scannerStateLabel.textContent = `scanner state: ${
       isEnabled ? 'enabled' : 'disabled'
     }`
 
