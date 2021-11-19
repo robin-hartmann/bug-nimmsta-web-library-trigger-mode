@@ -35,10 +35,25 @@ Also, the screen on the HS 50 should only display the status bar and the last sc
 Below the input fields and the buttons you should see a label and a checked checkbox `use setLayout:` and a label with the state in which the scanner should be - it should say `scanner state: enabled`.
 At the bottom you should see another label reading `no scan events yet`.
 This last label will show a counter of how many scan events were received.
+You should be able to keep scanning indefinitely without any interruptions.
 
-You should be able to keep scanning indefinitely, but very rarely the scanner stops temporarily and the LEDs flash red three times (no message is displayed) or it stops temporarily and displays the message `Error: Device is locked` on the screen of the HS 50 for a few seconds.
-Also, the scan events received by the web page do not match the actual scans - some scans are concatenated into a single scan event and some scans don't trigger an event at all, even though the scanner sounded a beep - there should be one scan event per beep (you can use the scan events counter to check this).
-Additionally, the screen of the HS 50 will randomly display GUI elements from a different layout (one or two buttons at the bottom and/or a number in the center) mixed in with the GUI elements it should actually be displaying (status bar and last scanned data).
+But the following problems arise when doing this:
+
+- frequent occurrences (I could reliably reproduce these)
+  - the scan events received by the web page do not match the actual scans
+    - some scans are concatenated into a single scan event and some scans don't trigger an event at all, even though the scanner sounded a beep
+    - there should be exactly one scan event per beep (you can use the scan events counter to check this)
+  - the screen displays the incorrect Layout
+    - i.e. an input field is focused and the scanner is enabled, but the screen displays two buttons and a number instead of the last scanned data
+  - (the screen displays GUI elements from a different layout (one or two buttons at the bottom and/or a number in the center) mixed in with the GUI elements it should actually be displaying)
+    - I never managed to get this to stay, it only showed up this way before switching to a different Layout, so this isn't a big issue
+- rare/irregular occurences (I couldn't reliably reproduce these)
+  - the scanner stops and stays disabled
+    - also, sometimes the screen displays the incorrect layout
+    - i.e. an input field is focused and the scanner should be enabled, but it is disabled and the screen displays two buttons and a number instead of the last scanned data
+  - the scanner stops, is disabled temporarily, it beeps and flashes the LEDs red three times
+  - the LEDs flash red three times and no scan events are transmitted temporarily (the scanner doesn't stop, no beeps)
+  - the scanner freezes and has to be restarted forcefully (trigger held and released after 30 seconds) to get working properly again
 
 To stop the server hit CTRL+C in the terminal.
 
@@ -60,14 +75,14 @@ The web page was opened on a Zebra MC330K and the following versions were used:
 | ---------------------------- | ---------------- |
 | Android                      | `8.1.0`          |
 | NIMMSTA Web Library          | `5.0.517`        |
-| NIMMSTA Core Library Shared  | `5.0-3711`       |
-| NIMMSTA Core Library Android | `5.0-2464`       |
-| NIMMSTA App                  | `5.3.1-3714`     |
+| NIMMSTA Core Library Shared  | `5.0-3750`       |
+| NIMMSTA Core Library Android | `5.0-2488`       |
+| NIMMSTA App                  | `5.3.1-3721`     |
 | HS 50 Hardware               | `03.00-0`        |
-| HS 50 Firmware               | `01.14-717`      |
+| HS 50 Firmware               | `01.14-703`      |
 | HS 50 Loader                 | `01.13-703`      |
 | HS 50 Protocol               | `01.03-0`        |
-| HS 50 Imager                 | `AEOS00002R00F0` |
+| HS 50 Imager                 | `AEOS00002R00FX` |
 | HS 50 BLE                    | `05.00-352`      |
 | HS 50 BLE FW                 | `30.1.1.0`       |
 | HS 50 Touch Controller       | `10`             |
