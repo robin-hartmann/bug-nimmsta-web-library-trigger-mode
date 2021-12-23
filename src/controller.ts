@@ -8,15 +8,21 @@ export class Controller {
 
   private readonly elementCreator = new ElementCreator()
 
+  private readonly speedStatistics: number[] = []
+
   private readonly inputs: HTMLInputElement[] = []
 
   private readonly scannerStateLabel: HTMLLabelElement
 
   private readonly scanEventsCountLabel: HTMLLabelElement
 
+  private readonly speedStatisticsLabel: HTMLLabelElement
+
   private useSetLayout = true
 
   private scanEventsCount = 0
+
+  private speedStatisticsResetTimerId?: number
 
   constructor() {
     for (let i = 0; i < 6; i++) {
@@ -63,6 +69,11 @@ export class Controller {
       'label',
       'no scan events yet',
     )
+
+    this.speedStatisticsLabel = this.elementCreator.createAndAppend(
+      'label',
+      'no scan events yet',
+    )
   }
 
   public async run(): Promise<void> {
@@ -93,6 +104,7 @@ export class Controller {
     const nextInput = this.inputs[(activeIndex + 1) % this.inputs.length]
 
     activeEl.value = data
+    this.addScanToSpeedStatistics()
     nextInput.focus()
   }
 
@@ -136,5 +148,29 @@ export class Controller {
     }`
 
     return true
+  }
+
+  private addScanToSpeedStatistics(): void {
+    this.speedStatistics.push(performance.now())
+
+    if (typeof this.speedStatisticsResetTimerId === 'number') {
+      clearTimeout(this.speedStatisticsResetTimerId)
+    }
+
+    this.speedStatisticsResetTimerId = window.setTimeout(() => {
+      this.speedStatistics.length = 0
+    }, 3000)
+
+    if (this.speedStatistics.length === 1) {
+      this.speedStatisticsLabel.textContent = 'Test (re)started'
+
+      return
+    }
+
+    const scansPerSecond =
+      this.speedStatistics.length /
+      ((this.speedStatistics.slice(-1)[0]! - this.speedStatistics[0]!) / 1000)
+
+    this.speedStatisticsLabel.textContent = `scans per Second: ${scansPerSecond}`
   }
 }
